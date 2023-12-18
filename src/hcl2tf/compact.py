@@ -13,7 +13,7 @@ def _compact_type_label_label_block_array(array: list) -> dict:
         name, *_ = children.keys()
         block_definition = dict(**children[name])
 
-        compacted[kind][name] = block_definition
+        compacted[kind][name] = _compact_lifecycle_block_array(block_definition)
 
     return dict(**compacted)
 
@@ -27,15 +27,12 @@ def _compact_type_label_block_array(array: list):
         name, *_ = definition.keys()
         block_definition = definition[name]
 
-        compacted[name] = block_definition
+        compacted[name] = _compact_lifecycle_block_array(block_definition)
     return dict(**compacted)
 
 
 def _compact_type_block_array(array: list) -> dict:
     """Compact list of blocks with a `type {}` signature."""
-
-    # Could do: {k: v for d in array for k,v in d.items()}
-    # ..but that'll gain us bragging rights and not readabilty.
     compacted = {}
     for d in array:
         compacted.update(d)
@@ -56,45 +53,28 @@ def _compact_lifecycle_block_array(block_definition):
     return block_definition
 
 
-def _compact_type_label_label_block_array_with_lifecycle(config, block_type):
-    """Compact the lifecycle array of `type  "label" "label" {}` block definitions found in `config`."""
-    compacted = _compact_type_label_label_block_array(config.get(block_type, []))  # Compact
-    for first_label, first_definition_array in compacted.items():  # Select dict of block definitions filed under the first label
-        for second_label, block_definition in first_definition_array.items():  # Select block definitions filed under second label 
-            compacted[first_label][second_label] = _compact_lifecycle_block_array(block_definition)
-    return compacted
-
-
 def compact_resource_block_array(config):
-    return _compact_type_label_label_block_array_with_lifecycle(config, "resource")
+    return _compact_type_label_label_block_array(config.get("resource", []))
 
 
 def compact_data_block_array(config):
-    return _compact_type_label_label_block_array_with_lifecycle(config, "data")
-
-
-def _compact_type_label_block_array_with_lifecycle(config, block_type):
-    """Compact the lifecycle array of `type "label" {}` block definitions found in `config`."""
-    compacted = _compact_type_label_block_array(config.get(block_type, []))
-    for label, block_definition in compacted.items():
-        compacted[label] = _compact_lifecycle_block_array(block_definition)
-    return compacted
+    return _compact_type_label_label_block_array(config.get("data", []))
 
 
 def compact_output_block_array(config):
-    return _compact_type_label_block_array_with_lifecycle(config, "output")
+    return _compact_type_label_block_array(config.get("output", []))
 
 
 def compact_variable_block_array(config):
-    return _compact_type_label_block_array_with_lifecycle(config, "variable")
+    return _compact_type_label_block_array(config.get("variable", []))
 
 
 def compact_module_block_array(config):
-    return _compact_type_label_block_array_with_lifecycle(config, "module")
+    return _compact_type_label_block_array(config.get("module", []))
 
 
 def compact_provider_block_array(config):
-    return _compact_type_label_block_array_with_lifecycle(config, "provider")
+    return _compact_type_label_block_array(config.get("provider", []))
 
 
 def compact_check_block_array(config):
