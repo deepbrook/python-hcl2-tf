@@ -1,0 +1,10 @@
+[build-system]
+requires = [
+  "setuptools >= 40.9.0",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+markers = [
+    "sample: used to declare which sample tf and md files are to be loaded, when using the terraform_module_samples fixture.",
+]

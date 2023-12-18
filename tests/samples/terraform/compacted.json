@@ -1,0 +1,14 @@
+{
+    "backend": {
+        "type": "local",
+        "path": "./terraform.tfstate",
+        "workspace_dir": "./workspaces"
+    },
+    "required_version": "~>1",
+    "required_providers": {
+        "aws": {
+            "source": "hashicorp/aws",
+            "version": "~>1"
+        }
+    }
+}

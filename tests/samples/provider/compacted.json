@@ -1,0 +1,13 @@
+{
+    "aws": {
+        "region": "eu-central-1",
+        "access_key": "my-secret-access-key",
+        "default_tags": [
+            {
+                "tags": {
+                    "managed-by": "terraform"
+                }
+            }
+        ]
+    }
+}
