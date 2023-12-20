@@ -46,6 +46,7 @@ class TestBlockSpecificCompactFuncs:
             "resource",
             "data",
             "variable",
+            "locals",
             "output",
             "module",
             "provider",

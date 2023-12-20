@@ -68,6 +68,9 @@ def compact_output_block_array(config):
 def compact_variable_block_array(config):
     return _compact_type_label_block_array(config.get("variable", []))
 
+def compact_locals_block_array(config):
+    return _compact_type_block_array(config.get("locals", []))
+
 
 def compact_module_block_array(config):
     return _compact_type_label_block_array(config.get("module", []))
