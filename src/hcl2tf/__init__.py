@@ -9,24 +9,13 @@ __version__ = "0.1.0"
 import hcl2
 
 from hcl2tf import compact
-
+from hcl2tf.utils import BLOCK_TYPES, AddressableDict
 
 def _compact(config):
-    for block_type in (
-        "resource",
-        "data",
-        "variable",
-        "output",
-        "module",
-        "provider",
-        "terraform",
-        "import",
-        "moved",
-        "check",
-    ):
+    for block_type in BLOCK_TYPES:
         compactor_func = getattr(compact, f"compact_{block_type}_block_array")
-        config[block_type] = compactor_func(config[block_type])
-    return config
+        config[block_type] = compactor_func(config)
+    return AddressableDict(config)
 
 
 def load(*args, **kwargs):
