@@ -6,9 +6,10 @@ on:
     branches:
       - main
 
+name: Tox
 
 jobs:
-  test:
+  tox:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
