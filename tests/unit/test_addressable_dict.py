@@ -56,6 +56,17 @@ def test_address_based_access_handles_special_resource_case():
     d = AddressableDict({"resource": {"aws_s3_bucket": {"my_bucket": True}}})
     assert d.get("aws_s3_bucket.my_bucket", False)
 
+
+def test_variable_address_can_be_used_as_key_during_dict_lookup(sample_dir):
+    """Variable references in terraform configs use `var` instead of `variable`. 
+    
+    This test ensures we can use this declaration to look up a variable's config.
+    """
+    config_tf = sample_dir.joinpath("variable", "config.tf").read_text()
+    config = loads(config_tf)
+    assert config["var.locked"] == config["variable"]["locked"]
+
+
 def test_local_address_can_be_used_as_key_during_dict_lookup(sample_dir):
     """Local variable references in terraform configs use `local` instead of `locals` as block type. 
     

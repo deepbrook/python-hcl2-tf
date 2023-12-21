@@ -27,6 +27,8 @@ class AddressableDict(MutableMapping):
         path = addr.split(".")
         if path[0] == "local":
             path = ["locals", *path[1:]]
+        elif path[0] == "var":
+            path = ["variable", *path[1:]]
         elif path[0] not in BLOCK_TYPES:
             path = ["resource", *path]
         return path
