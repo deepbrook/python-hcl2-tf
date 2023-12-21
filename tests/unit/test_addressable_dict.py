@@ -1,3 +1,4 @@
+from hcl2tf import loads
 from hcl2tf.utils import AddressableDict
 
 import pytest
@@ -54,4 +55,14 @@ def test_address_based_access_handles_special_resource_case():
     """Ensure addresses not starting with a block type are treated as addresses in the resource obejct."""
     d = AddressableDict({"resource": {"aws_s3_bucket": {"my_bucket": True}}})
     assert d.get("aws_s3_bucket.my_bucket", False)
+
+def test_local_address_can_be_used_as_key_during_dict_lookup(sample_dir):
+    """Local variable references in terraform configs use `local` instead of `locals` as block type. 
+    
+    This test ensures we can use this declaration to look up a variable's config.
+    """
+    config_tf = sample_dir.joinpath("locals", "config.tf").read_text()
+    config = loads(config_tf)
+    assert config["local.something"] == config["locals"]["something"]
+
 

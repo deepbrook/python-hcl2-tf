@@ -25,7 +25,9 @@ class AddressableDict(MutableMapping):
         if "." not in addr:
             raise ValueError("Not a valid address!")
         path = addr.split(".")
-        if path[0] not in BLOCK_TYPES:
+        if path[0] == "local":
+            path = ["locals", *path[1:]]
+        elif path[0] not in BLOCK_TYPES:
             path = ["resource", *path]
         return path
 
