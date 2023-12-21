@@ -56,16 +56,22 @@ class AddressableDict(MutableMapping):
         return self.config.__delitem__(__key)
 
     def _fetch(self, addr: list, config=None):
-        # TODO: This *should* not be problematic, but could loop infinitely
-        #  if config[next] happens to be None for whatever reason.
         if config is None:
             config = self.config
         
+        if None in addr:
+            raise ValueError("address {addr} contains invalid None sub-key!")
+
         if not addr:
             return config  # Arrived at destination
         
         next, *remaining = addr
 
+        try:
+            next_config = config[next]
+        except TypeError as e:
+            raise KeyError(next) from e
+    
         try:
             return self._fetch(remaining, config[next])
         except KeyError as e:

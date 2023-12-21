@@ -15,7 +15,7 @@ def test_invalid_address_raises_key_error():
 
 
 def test_unknown_address_raises_key_error():
-    d = AddressableDict({})
+    d = AddressableDict({"unknown": {"foo": "bar"}})
     with pytest.raises(KeyError):
         d["unknown.address"]
 
@@ -77,3 +77,10 @@ def test_local_address_can_be_used_as_key_during_dict_lookup(sample_dir):
     assert config["local.something"] == config["locals"]["something"]
 
 
+def test_fetch_raises_keyError_if_path_causes_accessing_invalid_type():
+    with pytest.raises(KeyError):
+        AddressableDict({"test": True})._fetch(["test", "result"])
+    
+def test_fetch_does_exits_early_if_a_None_value_is_encountered():
+    with pytest.raises(ValueError):
+        AddressableDict({"test": True})._fetch([None])
