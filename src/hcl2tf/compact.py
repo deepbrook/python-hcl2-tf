@@ -105,7 +105,7 @@ def compact_import_block_array(config):
 
 
 def compact_terraform_block_array(config):
-    compacted = _compact_type_block_array(config["terraform"])
+    compacted = _compact_type_block_array(config.get("terraform", []))
 
     if "required_providers" in compacted:
         compacted["required_providers"] = _compact_type_block_array(
