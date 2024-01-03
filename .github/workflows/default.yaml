@@ -9,9 +9,17 @@ on:
 name: Tox
 
 jobs:
-  tox:
+  tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: pip install -r requirements.txt
       - run: tox
+
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt
+      - run: ruff check
+      - run: ruff format
