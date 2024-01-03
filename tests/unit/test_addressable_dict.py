@@ -2,10 +2,6 @@ from hcl2tf import loads
 from hcl2tf.utils import AddressableDict
 
 import pytest
-import json
-import hcl2
-
-from fixtures import sample_dir
 
 
 def test_invalid_address_raises_key_error():
@@ -26,6 +22,7 @@ def test_regular_key_access_works():
         d["someKey"]
     except KeyError as e:
         raise AssertionError("Could not access top-level key") from e
+
 
 def test_abc_methods_are_implemented_and_work_as_expected():
     d = AddressableDict({"test": True})
@@ -58,8 +55,8 @@ def test_address_based_access_handles_special_resource_case():
 
 
 def test_variable_address_can_be_used_as_key_during_dict_lookup(sample_dir):
-    """Variable references in terraform configs use `var` instead of `variable`. 
-    
+    """Variable references in terraform configs use `var` instead of `variable`.
+
     This test ensures we can use this declaration to look up a variable's config.
     """
     config_tf = sample_dir.joinpath("variable", "config.tf").read_text()
@@ -68,8 +65,8 @@ def test_variable_address_can_be_used_as_key_during_dict_lookup(sample_dir):
 
 
 def test_local_address_can_be_used_as_key_during_dict_lookup(sample_dir):
-    """Local variable references in terraform configs use `local` instead of `locals` as block type. 
-    
+    """Local variable references in terraform configs use `local` instead of `locals` as block type.
+
     This test ensures we can use this declaration to look up a variable's config.
     """
     config_tf = sample_dir.joinpath("locals", "config.tf").read_text()
@@ -80,7 +77,8 @@ def test_local_address_can_be_used_as_key_during_dict_lookup(sample_dir):
 def test_fetch_raises_keyError_if_path_causes_accessing_invalid_type():
     with pytest.raises(KeyError):
         AddressableDict({"test": True})._fetch(["test", "result"])
-    
+
+
 def test_fetch_does_exits_early_if_a_None_value_is_encountered():
     with pytest.raises(ValueError):
         AddressableDict({"test": True})._fetch([None])

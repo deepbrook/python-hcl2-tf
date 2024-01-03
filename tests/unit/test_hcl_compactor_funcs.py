@@ -4,8 +4,6 @@ import pytest
 import json
 import hcl2
 
-from fixtures import sample_dir
-
 
 class TestGenericCompactFuncs:
     """Assert behaviour of generic compactor functions."""
@@ -59,7 +57,7 @@ class TestBlockSpecificCompactFuncs:
     def test_compact_resource_block_array(self, sample_dir, block_type):
         config_path = sample_dir.joinpath(block_type, "config.tf")
         json_path = sample_dir.joinpath(block_type, "compacted.json")
-        
+
         config = hcl2.loads(config_path.read_text())
         compactor_func = getattr(compact, f"compact_{block_type}_block_array")
 
