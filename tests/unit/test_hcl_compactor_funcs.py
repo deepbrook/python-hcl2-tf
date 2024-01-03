@@ -1,3 +1,5 @@
+# noqa: F811
+
 from hcl2tf import compact
 
 import pytest
